@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="report_invoice_document_kabay_new" model="ir.ui.view">
+      <field name="name">Kabay Invoice - New Company Design</field>
+      <field name="key">kabay_invoice_report_pro.report_invoice_document_kabay_new</field>
+      <field name="type">qweb</field>
+      <field name="inherit_id" eval="False"/>
+      <field name="mode">primary</field>
+      <field name="active" eval="True"/>
+      <field name="arch" type="xml">
+        <t t-name="kabay_invoice_report_pro.report_invoice_document_kabay_new">
+          <t t-set="o" t-value="o.with_context(lang=lang)"/>
+          <t t-set="kabay_new" t-value="o._kabay_new_invoice_report_data()"/>
+
+          <div class="header"/>
+
+          <div class="article kabay-new-invoice"
+               t-att-data-oe-model="o and o._name"
+               t-att-data-oe-id="o and o.id"
+               t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <div class="page kabay-new-invoice-page">
+              <!-- Logo configured in Settings > Configure Document Layout. -->
+              <div class="kabay-new-invoice-logo-area">
+                <img t-if="o.company_id.logo"
+                     t-att-src="image_data_uri(o.company_id.logo)"
+                     class="kabay-new-invoice-logo"
+                     alt="Logo"/>
+              </div>
+
+              <table class="kabay-new-invoice-header-table avoid-page-break-inside">
+                <tbody>
+                  <tr>
+                    <td class="kabay-new-invoice-issuer-column">
+                      <!-- Exact address/details block configured in Document Layout. -->
+                      <div class="kabay-new-invoice-company-details-source"
+                           t-if="o.company_id.company_details"
+                           t-field="o.company_id.company_details"/>
+                      <div t-if="o.company_id.vat">
+                        <span class="kabay-new-invoice-label">RNC:</span>
+                        <span t-field="o.company_id.vat"/>
+                      </div>
+                      <div t-if="kabay_new['invoice_date']">
+                        <span class="kabay-new-invoice-label">Fecha Emisión:</span>
+                        <span t-out="kabay_new['invoice_date']"/>
+                      </div>
+                    </td>
+                    <td class="kabay-new-invoice-fiscal-column">
+                      <div class="kabay-new-invoice-title" t-out="kabay_new['document_title']"/>
+                      <div t-if="kabay_new['fiscal_number']">
+                        <span class="kabay-new-invoice-label" t-out="kabay_new['fiscal_label'] + ':'"/>
+                        <span t-out="kabay_new['fiscal_number']"/>
+                      </div>
+                      <div t-if="kabay_new['fiscal_expiration']">
+                        <span class="kabay-new-invoice-label"
+                              t-out="kabay_new['fiscal_expiration_label'] + ':'"/>
+                        <span t-out="kabay_new['fiscal_expiration']"/>
+                      </div>
+                      <div t-if="kabay_new['payment_reference']" class="kabay-new-invoice-top-payment-reference">
+                        <span class="kabay-new-invoice-label">Referencia de pago:</span>
+                        <span t-out="kabay_new['payment_reference']"/>
+                      </div>
+                      <div t-if="kabay_new['salesperson']" class="kabay-new-invoice-salesperson">
+                        <span class="kabay-new-invoice-label">Vendedor:</span>
+                        <span t-out="kabay_new['salesperson']"/>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="kabay-new-invoice-customer-table avoid-page-break-inside">
+                <tbody>
+                  <tr>
+                    <td class="kabay-new-invoice-customer-column">
+                      <div t-if="o.partner_id.vat">
+                        <span class="kabay-new-invoice-label">RNC:</span>
+                        <span t-field="o.partner_id.vat"/>
+                      </div>
+                      <div>
+                        <span class="kabay-new-invoice-label">Razón Social:</span>
+                        <span t-field="o.partner_id.name"/>
+                      </div>
+                      <div t-if="kabay_new['customer_phone']">
+                        <span class="kabay-new-invoice-label">Tel.:</span>
+                        <span t-out="kabay_new['customer_phone']"/>
+                      </div>
+                      <div t-foreach="kabay_new['customer_address_lines']"
+                           t-as="customer_address_line"
+                           class="kabay-new-invoice-muted"
+                           t-out="customer_address_line"/>
+                    </td>
+                    <td class="kabay-new-invoice-origin-column">
+                      <div t-if="kabay_new['origin']">
+                        <span class="kabay-new-invoice-label">Origen:</span>
+                        <div t-out="kabay_new['origin']"/>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="kabay-new-invoice-lines" name="invoice_line_table">
+                <thead>
+                  <tr>
+                    <th class="kabay-new-invoice-description">Descripción</th>
+                    <th class="kabay-new-invoice-quantity">Cantidad</th>
+                    <th class="kabay-new-invoice-unit-price">Precio unitario</th>
+                    <th class="kabay-new-invoice-tax">Impuestos</th>
+                    <th class="kabay-new-invoice-amount">Importe</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="kabay_new['lines']" t-as="new_line">
+                    <t t-set="line" t-value="new_line['record']"/>
+                    <tr t-if="new_line['display_type'] == 'product'"
+                        class="kabay-new-invoice-product-row">
+                      <td>
+                        <div t-out="new_line['primary']"/>
+                        <div t-if="new_line['detail'] and o.company_id.invoice_report_design != 'new'"
+                             class="kabay-new-invoice-line-detail"
+                             t-out="new_line['detail']"/>
+                      </td>
+                      <td class="kabay-new-invoice-number-cell">
+                        <span t-out="line.quantity"
+                              t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                        <span t-field="line.product_uom_id" groups="uom.group_uom"/>
+                      </td>
+                      <td class="kabay-new-invoice-number-cell">
+                        <span t-out="line._kabay_untaxed_unit_price()"
+                              t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                      </td>
+                      <td class="kabay-new-invoice-number-cell">
+                        <span t-out="new_line['tax_amount']"
+                              t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                      </td>
+                      <td class="kabay-new-invoice-number-cell">
+                        <span t-field="line.price_subtotal"/>
+                      </td>
+                    </tr>
+                    <tr t-elif="new_line['display_type'] in ('line_section', 'line_subsection')"
+                        class="kabay-new-invoice-section-row">
+                      <td colspan="5">
+                        <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                      </td>
+                    </tr>
+                    <tr t-elif="new_line['display_type'] == 'line_note'"
+                        class="kabay-new-invoice-note-row">
+                      <td colspan="5">
+                        <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                      </td>
+                    </tr>
+                  </t>
+                </tbody>
+              </table>
+
+              <table class="kabay-new-invoice-bottom-table">
+                <tbody>
+                  <tr>
+                    <td class="kabay-new-invoice-notes-column"/>
+                    <td class="kabay-new-invoice-totals-column">
+                      <table class="kabay-new-invoice-totals avoid-page-break-inside">
+                        <tbody>
+                          <tr class="kabay-new-invoice-subtotal-row">
+                            <td class="kabay-new-invoice-label">Subtotal</td>
+                            <td><span t-field="o.amount_untaxed"/></td>
+                          </tr>
+                          <tr class="kabay-new-invoice-tax-row">
+                            <td t-out="kabay_new['tax_label']"/>
+                            <td><span t-field="o.amount_tax"/></td>
+                          </tr>
+                          <tr class="kabay-new-invoice-total-row">
+                            <td>Total</td>
+                            <td><span t-field="o.amount_total"/></td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <table t-if="kabay_new['payments']" class="kabay-new-invoice-payment-summary avoid-page-break-inside">
+                        <tbody>
+                          <tr t-foreach="kabay_new['payments']" t-as="payment">
+                            <td>
+                              <span>Pagado el </span>
+                              <span t-out="payment['date']"/>
+                            </td>
+                            <td>
+                              <span t-out="payment['amount']"
+                                    t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                            </td>
+                          </tr>
+                          <tr class="kabay-new-invoice-amount-due-row">
+                            <td>Cantidad por pagar</td>
+                            <td><span t-field="o.amount_residual"/></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div t-if="kabay_new['company_terms']"
+                   class="kabay-new-invoice-commercial-notes avoid-page-break-inside">
+                <div class="kabay-new-invoice-commercial-notes-line"
+                     t-out="kabay_new['company_terms']"/>
+              </div>
+
+              <div class="kabay-new-invoice-payment-term avoid-page-break-inside">
+                <span class="kabay-new-invoice-label">Plazo de pago:</span>
+                <span t-out="kabay_new['payment_term']"/>
+              </div>
+
+              <table t-if="kabay_new['qr']['binary'] or kabay_new['qr']['src'] or kabay_new['security_code'] or kabay_new['signature_datetime']"
+                     class="kabay-new-invoice-ecf-data avoid-page-break-inside">
+                <tbody>
+                  <tr>
+                    <td t-if="kabay_new['qr']['binary'] or kabay_new['qr']['src']"
+                        class="kabay-new-invoice-ecf-qr-cell">
+                      <img t-if="kabay_new['qr']['binary']"
+                           t-att-src="image_data_uri(kabay_new['qr']['binary'])"
+                           class="kabay-new-invoice-ecf-qr"
+                           alt="Código QR e-CF"/>
+                      <img t-else=""
+                           t-att-src="kabay_new['qr']['src']"
+                           class="kabay-new-invoice-ecf-qr"
+                           alt="Código QR e-CF"/>
+                    </td>
+                    <td class="kabay-new-invoice-ecf-details">
+                      <div t-if="kabay_new['security_code']">
+                        <span class="kabay-new-invoice-label">Código de Seguridad:</span>
+                        <span t-out="kabay_new['security_code']"/>
+                      </div>
+                      <div t-if="kabay_new['signature_datetime']">
+                        <span class="kabay-new-invoice-label">Fecha Firma Digital:</span>
+                        <span t-out="kabay_new['signature_datetime']"/>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="kabay-new-invoice-fiscal-footer-table avoid-page-break-inside">
+                <tbody>
+                  <tr>
+                    <td class="kabay-new-invoice-signature-column kabay-new-invoice-signature-column-left">
+                      <div class="kabay-new-invoice-signature-line"/>
+                      <div class="kabay-new-invoice-signature-label">Recibido por</div>
+                    </td>
+                    <td class="kabay-new-invoice-signature-column kabay-new-invoice-signature-column-right">
+                      <div class="kabay-new-invoice-signature-line"/>
+                      <div class="kabay-new-invoice-signature-label">Entregado por</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="oe_structure"/>
+            </div>
+          </div>
+
+          <div class="footer kabay-new-invoice-footer">
+            <div class="kabay-new-invoice-footer-lines"/>
+            <!-- Footer configured in Settings > Configure Document Layout. -->
+            <div t-if="o.company_id.report_footer"
+                 class="kabay-new-invoice-document-footer-source"
+                 t-field="o.company_id.report_footer"/>
+            <div class="kabay-new-invoice-page-counter">
+              Página: <span class="page"/> de <span class="topage"/>
+            </div>
+          </div>
+        </t>
+      </field>
+    </record>
+  </data>
+</odoo>

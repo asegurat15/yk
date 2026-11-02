@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!--
+      The upstream module uses standalone primary QWeb views rather than the
+      standard sale/account documents.  Inherit those exact views so this
+      module remains a visual override and preserves all report routing and
+      accounting logic from kabay_invoice_report_pro.
+    -->
+
+<!--    <template id="report_quotation_document_compact"-->
+<!--              inherit_id="kabay_invoice_report_pro.report_quotation_document_kabay"-->
+<!--              name="Innovate Quotation Compact Layout"-->
+<!--              priority="90">-->
+<!--      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-company-header ')]"-->
+<!--             position="replace">-->
+<!--        <t t-set="innovate_company_partner" t-value="doc.company_id.partner_id"/>-->
+<!--        <table class="kabay-quotation-company-header innovate-compact-header-table avoid-page-break-inside">-->
+<!--          <tbody>-->
+<!--            <tr>-->
+<!--              <td class="innovate-compact-logo-cell">-->
+<!--                <img t-if="doc.company_id.logo"-->
+<!--                     t-att-src="image_data_uri(doc.company_id.logo)"-->
+<!--                     class="kabay-quotation-logo innovate-compact-logo"-->
+<!--                     alt="Logo"/>-->
+<!--              </td>-->
+<!--              <td class="innovate-compact-company-cell">-->
+<!--                <div t-if="innovate_company_partner.name"-->
+<!--                     class="innovate-inline-name"-->
+<!--                     t-field="innovate_company_partner.name"/>-->
+<!--                <div t-if="innovate_company_partner.phone or innovate_company_partner.vat"-->
+<!--                     class="innovate-company-contact">-->
+<!--                  <span t-if="innovate_company_partner.phone">-->
+<!--                    <span class="kabay-quotation-bold">Tel.:</span>-->
+<!--                    <span t-field="innovate_company_partner.phone"/>-->
+<!--                  </span>-->
+<!--                  <span t-if="innovate_company_partner.phone and innovate_company_partner.vat"-->
+<!--                        class="innovate-company-contact-separator"> · </span>-->
+<!--                  <span t-if="innovate_company_partner.vat">-->
+<!--                    <span class="kabay-quotation-bold">RNC:</span>-->
+<!--                    <span t-field="innovate_company_partner.vat"/>-->
+<!--                  </span>-->
+<!--                </div>-->
+<!--                <div t-if="innovate_company_partner.street or innovate_company_partner.street2 or innovate_company_partner.city or innovate_company_partner.state_id or innovate_company_partner.zip or innovate_company_partner.country_id"-->
+<!--                     class="innovate-inline-details innovate-company-address">-->
+<!--                  <span t-if="innovate_company_partner.street"-->
+<!--                        class="innovate-inline-item"-->
+<!--                        t-field="innovate_company_partner.street"/>-->
+<!--                  <span t-if="innovate_company_partner.street2"-->
+<!--                        class="innovate-inline-item"-->
+<!--                        t-field="innovate_company_partner.street2"/>-->
+<!--                  <span t-if="innovate_company_partner.city"-->
+<!--                        class="innovate-inline-item"-->
+<!--                        t-field="innovate_company_partner.city"/>-->
+<!--                  <span t-if="innovate_company_partner.state_id"-->
+<!--                        class="innovate-inline-item"-->
+<!--                        t-field="innovate_company_partner.state_id"/>-->
+<!--                  <span t-if="innovate_company_partner.zip"-->
+<!--                        class="innovate-inline-item"-->
+<!--                        t-field="innovate_company_partner.zip"/>-->
+<!--                  <span t-if="innovate_company_partner.country_id"-->
+<!--                        class="innovate-inline-item"-->
+<!--                        t-field="innovate_company_partner.country_id"/>-->
+<!--                </div>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--      </xpath>-->
+
+<!--      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-customer-table ')]"-->
+<!--             position="replace">-->
+<!--        <table class="kabay-quotation-customer-table innovate-compact-customer-table avoid-page-break-inside">-->
+<!--          <tbody>-->
+<!--            <tr>-->
+<!--              <td class="kabay-quotation-customer-empty"/>-->
+<!--              <td class="kabay-quotation-customer-column">-->
+<!--                <div class="innovate-customer-details">-->
+<!--                  <div t-if="customer.name"-->
+<!--                       class="innovate-customer-line innovate-customer-name"-->
+<!--                       t-field="customer.name"/>-->
+<!--                  <div t-if="customer.phone or customer.vat"-->
+<!--                       class="innovate-customer-line innovate-customer-contact">-->
+<!--                    <span t-if="customer.phone">-->
+<!--                      <span class="kabay-quotation-bold">Tel.:</span>-->
+<!--                      <span t-field="customer.phone"/>-->
+<!--                    </span>-->
+<!--                    <span t-if="customer.phone and customer.vat" class="innovate-customer-contact-separator"> · </span>-->
+<!--                    <span t-if="customer.vat">-->
+<!--                      <span class="kabay-quotation-bold">RNC:</span>-->
+<!--                      <span t-field="customer.vat"/>-->
+<!--                    </span>-->
+<!--                  </div>-->
+<!--                  <div t-if="customer.street or customer.street2 or customer.city or customer.state_id or customer.zip or customer.country_id"-->
+<!--                       class="innovate-inline-details innovate-customer-address">-->
+<!--                    <span t-if="customer.street" class="innovate-inline-item" t-field="customer.street"/>-->
+<!--                    <span t-if="customer.street2" class="innovate-inline-item" t-field="customer.street2"/>-->
+<!--                    <span t-if="customer.city" class="innovate-inline-item" t-field="customer.city"/>-->
+<!--                    <span t-if="customer.state_id" class="innovate-inline-item" t-field="customer.state_id"/>-->
+<!--                    <span t-if="customer.zip" class="innovate-inline-item" t-field="customer.zip"/>-->
+<!--                    <span t-if="customer.country_id" class="innovate-inline-item" t-field="customer.country_id"/>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--      </xpath>-->
+
+<!--      &lt;!&ndash; Add the untaxed, discounted subtotal for every product line. &ndash;&gt;-->
+<!--      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-lines-table ')]/thead/tr/th[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-taxes ')]"-->
+<!--             position="after">-->
+<!--        <th class="kabay-quotation-subtotal">Subtotal</th>-->
+<!--      </xpath>-->
+<!--      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-lines-table ')]//td[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-tax-cell ')]"-->
+<!--             position="after">-->
+<!--        <td class="kabay-quotation-subtotal-cell">-->
+<!--          <span t-field="line.price_subtotal"-->
+<!--                t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>-->
+<!--        </td>-->
+<!--      </xpath>-->
+<!--      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-lines-table ')]//tr[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-section-row ')]/td[@colspan='4']"-->
+<!--             position="attributes">-->
+<!--        <attribute name="colspan">5</attribute>-->
+<!--      </xpath>-->
+<!--      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-lines-table ')]//tr[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-note-row ')]/td[@colspan='4']"-->
+<!--             position="attributes">-->
+<!--        <attribute name="colspan">5</attribute>-->
+<!--      </xpath>-->
+
+<!--      <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-commercial-terms ')]"-->
+<!--             position="replace">-->
+<!--        <div t-if="kabay_company_terms"-->
+<!--             class="kabay-quotation-commercial-terms innovate-compact-terms avoid-page-break-inside">-->
+<!--          <div class="kabay-quotation-commercial-content innovate-terms-flow"-->
+<!--               t-out="kabay_company_terms"/>-->
+<!--        </div>-->
+<!--      </xpath>-->
+<!--      <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-quotation-payment-term ')]"-->
+<!--             position="attributes">-->
+<!--        <attribute name="class" add="innovate-compact-payment-term" separator=" "/>-->
+<!--      </xpath>-->
+<!--    </template>-->
+
+    <template id="report_invoice_document_compact"
+              inherit_id="kabay_invoice_report_pro.report_invoice_document_kabay_pro"
+              name="Innovate Invoice Compact Layout"
+              priority="90">
+      <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-logo-band ')]"
+             position="replace">
+        <t t-set="innovate_company_partner" t-value="o.company_id.partner_id"/>
+        <table class="innovate-compact-header-table avoid-page-break-inside">
+          <tbody>
+            <tr>
+              <td class="innovate-compact-logo-cell">
+                <img t-if="o.company_id.logo"
+                     t-att-src="image_data_uri(o.company_id.logo)"
+                     class="kabay-company-logo innovate-compact-logo"
+                     alt="Logo"/>
+              </td>
+              <td class="innovate-compact-company-cell">
+                <div t-if="innovate_company_partner.name"
+                     class="innovate-inline-name"
+                     t-field="innovate_company_partner.name"/>
+                <div t-if="innovate_company_partner.phone or innovate_company_partner.vat"
+                     class="innovate-company-contact">
+                  <span t-if="innovate_company_partner.phone">
+                    <span class="kabay-label">Tel.:</span>
+                    <span t-field="innovate_company_partner.phone"/>
+                  </span>
+                  <span t-if="innovate_company_partner.phone and innovate_company_partner.vat"
+                        class="innovate-company-contact-separator"> · </span>
+                  <span t-if="innovate_company_partner.vat">
+                    <span class="kabay-label">RNC:</span>
+                    <span t-field="innovate_company_partner.vat"/>
+                  </span>
+                </div>
+                <div t-if="innovate_company_partner.street or innovate_company_partner.street2 or innovate_company_partner.city or innovate_company_partner.state_id or innovate_company_partner.zip or innovate_company_partner.country_id"
+                     class="innovate-inline-details innovate-company-address">
+                  <span t-if="innovate_company_partner.street"
+                        class="innovate-inline-item"
+                        t-field="innovate_company_partner.street"/>
+                  <span t-if="innovate_company_partner.street2"
+                        class="innovate-inline-item"
+                        t-field="innovate_company_partner.street2"/>
+                  <span t-if="innovate_company_partner.city"
+                        class="innovate-inline-item"
+                        t-field="innovate_company_partner.city"/>
+                  <span t-if="innovate_company_partner.state_id"
+                        class="innovate-inline-item"
+                        t-field="innovate_company_partner.state_id"/>
+                  <span t-if="innovate_company_partner.zip"
+                        class="innovate-inline-item"
+                        t-field="innovate_company_partner.zip"/>
+                  <span t-if="innovate_company_partner.country_id"
+                        class="innovate-inline-item"
+                        t-field="innovate_company_partner.country_id"/>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </xpath>
+
+      <!-- Company data moved beside the logo; keep invoice dates below it. -->
+      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-main-head ')]/tbody/tr/td[1]/div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-company-address ')]"
+             position="replace"/>
+      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-main-head ')]/tbody/tr/td[1]/div[@t-if='o.company_id.vat']"
+             position="replace"/>
+
+      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-party-table ')]"
+             position="replace">
+        <table class="kabay-party-table innovate-compact-customer-table avoid-page-break-inside">
+          <tbody>
+            <tr>
+              <td class="kabay-left-column">
+                <div name="no_shipping" class="innovate-customer-details">
+                  <div t-if="o.partner_id.name" class="innovate-customer-line innovate-customer-name">
+                    <span class="kabay-label" t-out="kabay['customer_label'] + ':'"/>
+                    <span t-field="o.partner_id.name"/>
+                  </div>
+                  <div t-if="o.partner_id.phone or o.partner_id.vat"
+                       class="innovate-customer-line innovate-customer-contact">
+                    <span t-if="o.partner_id.phone">
+                      <span class="kabay-label">Tel.:</span>
+                      <span t-field="o.partner_id.phone"/>
+                    </span>
+                    <span t-if="o.partner_id.phone and o.partner_id.vat" class="innovate-customer-contact-separator"> · </span>
+                    <span t-if="o.partner_id.vat" id="partner_vat_no_shipping">
+                      <span class="kabay-label">RNC:</span>
+                      <span t-field="o.partner_id.vat"/>
+                    </span>
+                  </div>
+                  <div t-if="o.partner_id.street or o.partner_id.street2 or o.partner_id.city or o.partner_id.state_id or o.partner_id.zip or o.partner_id.country_id"
+                       class="innovate-inline-details innovate-customer-address">
+                    <span t-if="o.partner_id.street" class="innovate-inline-item" t-field="o.partner_id.street"/>
+                    <span t-if="o.partner_id.street2" class="innovate-inline-item" t-field="o.partner_id.street2"/>
+                    <span t-if="o.partner_id.city" class="innovate-inline-item" t-field="o.partner_id.city"/>
+                    <span t-if="o.partner_id.state_id" class="innovate-inline-item" t-field="o.partner_id.state_id"/>
+                    <span t-if="o.partner_id.zip" class="innovate-inline-item" t-field="o.partner_id.zip"/>
+                    <span t-if="o.partner_id.country_id" class="innovate-inline-item" t-field="o.partner_id.country_id"/>
+                  </div>
+                </div>
+              </td>
+              <td class="kabay-right-column">
+                <div t-if="kabay['quotation_code']" name="invoice_origin">
+                  <span class="kabay-label">Código de cotización:</span>
+                  <span t-out="kabay['quotation_code']"/>
+                </div>
+                <div t-if="kabay['payment_term']">
+                  <span class="kabay-label">Condiciones:</span>
+                  <span t-out="kabay['payment_term']"/>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </xpath>
+
+<!--      <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-terms-section ')]"-->
+<!--             position="replace">-->
+<!--        <div t-if="kabay['company_terms']"-->
+<!--             name="comment"-->
+<!--             class="kabay-terms-section innovate-compact-terms avoid-page-break-inside">-->
+<!--          <div class="kabay-narration innovate-terms-flow" t-out="kabay['company_terms']"/>-->
+<!--        </div>-->
+<!--      </xpath>-->
+      <xpath expr="//div[@id='payment_term']" position="attributes">
+        <attribute name="class" add="innovate-compact-payment-term" separator=" "/>
+      </xpath>
+    </template>
+
+    <template id="report_invoice_document_new_compact"
+              inherit_id="kabay_invoice_report_pro.report_invoice_document_kabay_new"
+              name="Innovate New Invoice Compact Layout"
+              priority="90">
+      <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-new-invoice-logo-area ')]"
+             position="replace">
+        <t t-set="innovate_company_partner" t-value="o.company_id.partner_id"/>
+        <table class="innovate-compact-header-table avoid-page-break-inside">
+          <tbody>
+            <tr>
+              <td class="innovate-compact-logo-cell">
+                <img t-if="o.company_id.logo"
+                     t-att-src="image_data_uri(o.company_id.logo)"
+                     class="kabay-new-invoice-logo innovate-compact-logo"
+                     alt="Logo"/>
+              </td>
+              <td class="innovate-compact-company-cell">
+                <div t-if="innovate_company_partner.name"
+                     class="innovate-inline-name"
+                     t-field="innovate_company_partner.name"/>
+                <div t-if="innovate_company_partner.phone or innovate_company_partner.vat"
+                     class="innovate-company-contact">
+                  <span t-if="innovate_company_partner.phone">
+                    <span class="kabay-new-invoice-label">Tel.:</span>
+                    <span t-field="innovate_company_partner.phone"/>
+                  </span>
+                  <span t-if="innovate_company_partner.phone and innovate_company_partner.vat"
+                        class="innovate-company-contact-separator"> · </span>
+                  <span t-if="innovate_company_partner.vat">
+                    <span class="kabay-new-invoice-label">RNC:</span>
+                    <span t-field="innovate_company_partner.vat"/>
+                  </span>
+                </div>
+                <div t-if="innovate_company_partner.street or innovate_company_partner.street2 or innovate_company_partner.city or innovate_company_partner.state_id or innovate_company_partner.zip or innovate_company_partner.country_id"
+                     class="innovate-inline-details innovate-company-address">
+                  <span t-if="innovate_company_partner.street" class="innovate-inline-item" t-field="innovate_company_partner.street"/>
+                  <span t-if="innovate_company_partner.street2" class="innovate-inline-item" t-field="innovate_company_partner.street2"/>
+                  <span t-if="innovate_company_partner.city" class="innovate-inline-item" t-field="innovate_company_partner.city"/>
+                  <span t-if="innovate_company_partner.state_id" class="innovate-inline-item" t-field="innovate_company_partner.state_id"/>
+                  <span t-if="innovate_company_partner.zip" class="innovate-inline-item" t-field="innovate_company_partner.zip"/>
+                  <span t-if="innovate_company_partner.country_id" class="innovate-inline-item" t-field="innovate_company_partner.country_id"/>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </xpath>
+
+      <!-- Company data moved beside the logo; keep the emission date below. -->
+      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-new-invoice-header-table ')]/tbody/tr/td[1]/div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-new-invoice-company-details-source ')]"
+             position="replace"/>
+      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-new-invoice-header-table ')]/tbody/tr/td[1]/div[@t-if='o.company_id.vat']"
+             position="replace"/>
+
+      <xpath expr="//table[contains(concat(' ', normalize-space(@class), ' '), ' kabay-new-invoice-customer-table ')]"
+             position="replace">
+        <table class="kabay-new-invoice-customer-table innovate-compact-customer-table avoid-page-break-inside">
+          <tbody>
+            <tr>
+              <td class="kabay-new-invoice-customer-column">
+                <div class="innovate-customer-details">
+                  <div t-if="o.partner_id.name" class="innovate-customer-line innovate-customer-name">
+                    <span class="kabay-new-invoice-label">Razón Social:</span>
+                    <span t-field="o.partner_id.name"/>
+                  </div>
+                  <div t-if="o.partner_id.phone or o.partner_id.vat"
+                       class="innovate-customer-line innovate-customer-contact">
+                    <span t-if="o.partner_id.phone">
+                      <span class="kabay-new-invoice-label">Tel.:</span>
+                      <span t-field="o.partner_id.phone"/>
+                    </span>
+                    <span t-if="o.partner_id.phone and o.partner_id.vat" class="innovate-customer-contact-separator"> · </span>
+                    <span t-if="o.partner_id.vat">
+                      <span class="kabay-new-invoice-label">RNC:</span>
+                      <span t-field="o.partner_id.vat"/>
+                    </span>
+                  </div>
+                  <div t-if="o.partner_id.street or o.partner_id.street2 or o.partner_id.city or o.partner_id.state_id or o.partner_id.zip or o.partner_id.country_id"
+                       class="innovate-inline-details innovate-customer-address">
+                    <span t-if="o.partner_id.street" class="innovate-inline-item" t-field="o.partner_id.street"/>
+                    <span t-if="o.partner_id.street2" class="innovate-inline-item" t-field="o.partner_id.street2"/>
+                    <span t-if="o.partner_id.city" class="innovate-inline-item" t-field="o.partner_id.city"/>
+                    <span t-if="o.partner_id.state_id" class="innovate-inline-item" t-field="o.partner_id.state_id"/>
+                    <span t-if="o.partner_id.zip" class="innovate-inline-item" t-field="o.partner_id.zip"/>
+                    <span t-if="o.partner_id.country_id" class="innovate-inline-item" t-field="o.partner_id.country_id"/>
+                  </div>
+                </div>
+              </td>
+              <td class="kabay-new-invoice-origin-column">
+                <div t-if="kabay_new['origin']">
+                  <span class="kabay-new-invoice-label">Origen:</span>
+                  <span t-out="kabay_new['origin']"/>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </xpath>
+
+      <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-new-invoice-commercial-notes ')]"
+             position="replace">
+        <div t-if="kabay_new['company_terms']"
+             class="kabay-new-invoice-commercial-notes innovate-compact-terms avoid-page-break-inside">
+          <div class="kabay-new-invoice-commercial-notes-line innovate-terms-flow"
+               t-out="kabay_new['company_terms']"/>
+        </div>
+      </xpath>
+      <xpath expr="//div[contains(concat(' ', normalize-space(@class), ' '), ' kabay-new-invoice-payment-term ')]"
+             position="attributes">
+        <attribute name="class" add="innovate-compact-payment-term" separator=" "/>
+      </xpath>
+    </template>
+  </data>
+</odoo>

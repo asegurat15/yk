@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_company_form_invoice_report_design" model="ir.ui.view">
+      <field name="name">res.company.form.invoice.report.design</field>
+      <field name="model">res.company</field>
+      <field name="inherit_id" ref="base.view_company_form"/>
+      <field name="arch" type="xml">
+        <!--
+          Anchor the field to currency_id, a core field of the company form.
+          Do not depend on optional groups such as social_media, which may be
+          absent or relocated by a particular Odoo build or another addon.
+        -->
+        <xpath expr="//field[@name='currency_id']" position="after">
+          <separator string="Reportes de facturación"/>
+          <field name="invoice_report_design"/>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

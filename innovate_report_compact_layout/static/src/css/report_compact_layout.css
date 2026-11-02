@@ -1,0 +1,269 @@
+/*
+ * Compact report override for Innovate Material.
+ * Tables are used for the logo/details row because wkhtmltopdf handles them
+ * more consistently than flexbox or grid.
+ */
+.kabay-quotation-report .innovate-compact-header-table,
+.kabay-invoice .innovate-compact-header-table,
+.kabay-new-invoice .innovate-compact-header-table {
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid #d1d5d9 !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    margin: 0 0 2.5mm 0 !important;
+    outline: 0 !important;
+    table-layout: fixed !important;
+    width: 100% !important;
+}
+
+/* The quotation already prints its own rule immediately after the table. */
+.kabay-quotation-report .innovate-compact-header-table {
+    border-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.kabay-quotation-report .innovate-compact-header-table td,
+.kabay-invoice .innovate-compact-header-table td,
+.kabay-new-invoice .innovate-compact-header-table td {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 0 2.5mm 0 !important;
+    vertical-align: middle !important;
+}
+
+.kabay-quotation-report .innovate-compact-header-table .innovate-compact-logo-cell,
+.kabay-invoice .innovate-compact-header-table .innovate-compact-logo-cell,
+.kabay-new-invoice .innovate-compact-header-table .innovate-compact-logo-cell {
+    padding-right: 6mm !important;
+    width: 34% !important;
+}
+
+.kabay-quotation-report .innovate-compact-header-table .innovate-compact-company-cell,
+.kabay-invoice .innovate-compact-header-table .innovate-compact-company-cell,
+.kabay-new-invoice .innovate-compact-header-table .innovate-compact-company-cell {
+    color: #474b50 !important;
+    line-height: 1.35 !important;
+    text-align: left !important;
+    width: 66% !important;
+}
+
+.kabay-quotation-report .innovate-compact-logo,
+.kabay-invoice .innovate-compact-logo,
+.kabay-new-invoice .innovate-compact-logo {
+    display: block !important;
+    height: auto !important;
+    margin: 0 !important;
+    max-height: 30mm !important;
+    max-width: 68mm !important;
+    object-fit: contain !important;
+    width: auto !important;
+}
+
+/* Company address remains a single inline flow below the Tel./RNC row. */
+.kabay-quotation-report .innovate-inline-details,
+.kabay-invoice .innovate-inline-details,
+.kabay-new-invoice .innovate-inline-details {
+    display: block !important;
+    white-space: normal !important;
+}
+
+.kabay-quotation-report .innovate-inline-details > .innovate-inline-item,
+.kabay-invoice .innovate-inline-details > .innovate-inline-item,
+.kabay-new-invoice .innovate-inline-details > .innovate-inline-item {
+    display: inline !important;
+    white-space: normal !important;
+}
+
+.kabay-quotation-report .innovate-inline-details > .innovate-inline-item:not(:last-child)::after,
+.kabay-invoice .innovate-inline-details > .innovate-inline-item:not(:last-child)::after,
+.kabay-new-invoice .innovate-inline-details > .innovate-inline-item:not(:last-child)::after {
+    content: ".\00a0" !important;
+    font-weight: 400 !important;
+    white-space: nowrap !important;
+}
+
+/* The last visible address value receives its final period. */
+.kabay-quotation-report .innovate-inline-details > .innovate-inline-item:last-child::after,
+.kabay-invoice .innovate-inline-details > .innovate-inline-item:last-child::after,
+.kabay-new-invoice .innovate-inline-details > .innovate-inline-item:last-child::after {
+    content: "." !important;
+    font-weight: 400 !important;
+}
+
+.kabay-quotation-report .innovate-company-contact,
+.kabay-invoice .innovate-company-contact,
+.kabay-new-invoice .innovate-company-contact {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+}
+
+.kabay-quotation-report .innovate-inline-name,
+.kabay-invoice .innovate-inline-name,
+.kabay-new-invoice .innovate-inline-name {
+    font-weight: 700 !important;
+}
+
+/* Customer follows the same order as company: name, Tel./RNC, address. */
+.kabay-quotation-report .innovate-customer-details,
+.kabay-invoice .innovate-customer-details,
+.kabay-new-invoice .innovate-customer-details {
+    display: block !important;
+    white-space: normal !important;
+}
+
+.kabay-quotation-report .innovate-customer-line,
+.kabay-invoice .innovate-customer-line,
+.kabay-new-invoice .innovate-customer-line {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.kabay-quotation-report .innovate-customer-name,
+.kabay-invoice .innovate-customer-name,
+.kabay-new-invoice .innovate-customer-name {
+    font-weight: 700 !important;
+}
+
+.kabay-quotation-report .innovate-customer-contact,
+.kabay-invoice .innovate-customer-contact,
+.kabay-new-invoice .innovate-customer-contact {
+    white-space: nowrap !important;
+}
+
+.kabay-quotation-report .innovate-compact-customer-table,
+.kabay-invoice .innovate-compact-customer-table,
+.kabay-new-invoice .innovate-compact-customer-table {
+    margin-top: 2.5mm !important;
+}
+
+.kabay-quotation-report .innovate-compact-customer-table .kabay-quotation-customer-empty {
+    width: 57% !important;
+}
+
+.kabay-quotation-report .innovate-compact-customer-table .kabay-quotation-customer-column {
+    padding-left: 2.5mm !important;
+    width: 43% !important;
+}
+
+/* Five-column quotation line table, including the per-line subtotal. */
+.kabay-quotation-report .kabay-quotation-description {
+    width: 45% !important;
+}
+
+.kabay-quotation-report .kabay-quotation-quantity {
+    width: 12% !important;
+}
+
+.kabay-quotation-report .kabay-quotation-price {
+    width: 14% !important;
+}
+
+.kabay-quotation-report .kabay-quotation-taxes {
+    width: 14% !important;
+}
+
+.kabay-quotation-report .kabay-quotation-subtotal {
+    text-align: right !important;
+    width: 15% !important;
+}
+
+.kabay-quotation-report .kabay-quotation-subtotal-cell {
+    text-align: right !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+}
+
+.kabay-invoice .innovate-compact-customer-table .kabay-left-column {
+    width: 64% !important;
+}
+
+.kabay-invoice .innovate-compact-customer-table .kabay-right-column {
+    width: 36% !important;
+}
+
+.kabay-new-invoice .innovate-compact-customer-table .kabay-new-invoice-customer-column {
+    width: 70% !important;
+}
+
+.kabay-new-invoice .innovate-compact-customer-table .kabay-new-invoice-origin-column {
+    width: 30% !important;
+}
+
+/* Qt WebKit/wkhtmltopdf supports the prefixed multi-column properties. */
+.kabay-quotation-report .innovate-terms-flow,
+.kabay-invoice .innovate-terms-flow,
+.kabay-new-invoice .innovate-terms-flow {
+    -webkit-column-count: 2 !important;
+    -webkit-column-fill: balance !important;
+    -webkit-column-gap: 8mm !important;
+    column-count: 2 !important;
+    column-fill: balance !important;
+    column-gap: 8mm !important;
+    line-height: 1.28 !important;
+    white-space: normal !important;
+    width: 100% !important;
+}
+
+.kabay-quotation-report .innovate-terms-flow > *,
+.kabay-invoice .innovate-terms-flow > *,
+.kabay-new-invoice .innovate-terms-flow > * {
+    -webkit-column-break-inside: avoid !important;
+    break-inside: avoid-column !important;
+    margin-top: 0 !important;
+    margin-bottom: 1mm !important;
+}
+
+.kabay-quotation-report .innovate-terms-flow ul,
+.kabay-quotation-report .innovate-terms-flow ol,
+.kabay-invoice .innovate-terms-flow ul,
+.kabay-invoice .innovate-terms-flow ol,
+.kabay-new-invoice .innovate-terms-flow ul,
+.kabay-new-invoice .innovate-terms-flow ol {
+    /* Let the list flow between the two outer columns; each item below is
+       still protected from splitting in the middle. */
+    -webkit-column-break-inside: auto !important;
+    break-inside: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-left: 5mm !important;
+}
+
+.kabay-quotation-report .innovate-terms-flow li,
+.kabay-invoice .innovate-terms-flow li,
+.kabay-new-invoice .innovate-terms-flow li {
+    -webkit-column-break-inside: avoid !important;
+    break-inside: avoid-column !important;
+    margin: 0 0 0.7mm 0 !important;
+}
+
+.kabay-quotation-report .innovate-compact-terms,
+.kabay-invoice .innovate-compact-terms,
+.kabay-new-invoice .innovate-compact-terms {
+    margin: 3mm 0 0 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+}
+
+.kabay-quotation-report .innovate-compact-payment-term,
+.kabay-invoice .innovate-compact-payment-term,
+.kabay-new-invoice .innovate-compact-payment-term {
+    display: block !important;
+    margin: 1.5mm 0 0 0 !important;
+    padding: 1.5mm 2.5mm !important;
+    width: auto !important;
+}
+
+/* Remove vertical space left by the upstream header bands. */
+.kabay-invoice .kabay-main-head,
+.kabay-new-invoice .kabay-new-invoice-header-table {
+    margin-top: 2mm !important;
+}
+
+.kabay-invoice .kabay-date-block {
+    margin-top: 0 !important;
+}

@@ -1,0 +1,12 @@
+<odoo>
+  <record id="sale_order_form_inherit_duplicate_last_line" model="ir.ui.view">
+    <field name="name">sale.order.form.inherit.duplicate_last_line</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='order_line']/list/control/create[@name='add_product_control']" position="after">
+        <button name="action_duplicate_last_line" string="Duplicar última línea" type="object" class="px-4 btn-link" context="{'order_id': parent.id}"/>
+      </xpath>
+    </field>
+  </record>
+</odoo>

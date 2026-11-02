@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <template id="report_invoice_document_gaaf" inherit_id="account.report_invoice_document">
+    
+    <xpath expr="//t[@t-set='address']" position="replace"><t t-set="address"></t></xpath>
+    <xpath expr="//div[@name='due_date']" position="replace"/>
+    
+    <xpath expr="//p[@name='payment_communication']" position="attributes">
+        <attribute name="t-if">False</attribute>
+    </xpath>
+
+    <xpath expr="//div[@id='informations']" position="replace">
+      <div id="informations" class="row mt-4 mb-4">
+        <div class="col-6">
+          <div>
+            <strong>Cliente</strong> <span class="ms-1" t-field="o.partner_id.name"/>
+          </div>
+          <div t-if="o.partner_id.vat">
+            <strong>RNC:</strong> <span class="ms-1" t-field="o.partner_id.vat"/>
+          </div>
+          <div t-if="o.partner_id.phone">
+            <strong>Tel.:</strong> <span class="ms-1" t-field="o.partner_id.phone"/>
+          </div>
+          <div class="mt-1">
+            <span t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
+          </div>
+        </div>
+
+        <div class="col-6 mw-100 mb-2">
+          <t t-if="o.partner_shipping_id and (o.partner_shipping_id != o.partner_id)">
+            <div name="shipping_address">
+              <div groups="account.group_delivery_invoice_address" name="shipping_address_block">
+                <strong>Enviar a:</strong>
+                <div t-field="o.partner_shipping_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+              </div>
+            </div>
+          </t>
+          <t t-else="">
+            <div name="no_shipping">
+              <div groups="account.group_delivery_invoice_address" name="no_shipping_address_block">
+                <strong>Enviar a:</strong>
+                <address class="mb-0" t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+              </div>
+            </div>
+          </t>
+
+          <div t-if="o.invoice_origin" name="origin">
+            <strong>Source:</strong><br/>
+            <span t-field="o.invoice_origin">SO123</span>
+          </div>
+        </div>
+      </div>
+    </xpath>
+
+    <xpath expr="//table[@name='invoice_line_table']" position="attributes">
+      <attribute name="style">font-size: .7rem;</attribute>
+    </xpath>
+
+    <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[@name='th_description']" position="before">
+      <th name="th_po" class="text-center text-uppercase">PO#</th>
+      <th name="th_estilo" class="text-center text-uppercase">ESTILO</th>
+      <th name="th_caja" class="text-center text-uppercase">CAJAS/PAQ.</th>
+      <th name="th_lot" class="text-center text-uppercase">LOT #</th>
+      <th name="th_color" class="text-center text-uppercase">COLOR</th>
+    </xpath>
+
+    <xpath expr="//table[@name='invoice_line_table']/tbody//t[@name='account_invoice_line_accountable']//td[@name='account_invoice_line_name']" position="before">
+      <td name="td_po_number"><span t-field="line.po_number"/></td>
+      <td name="td_style"><span t-field="line.style"/></td>
+      <td name="td_boxes"><span t-field="line.boxes"/></td>
+      <td name="td_lot_number"><span t-field="line.lot_number"/></td>
+      <td name="td_color"><span t-field="line.color"/></td>
+    </xpath>
+    
+    <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[@name='th_quantity']" position="replace">
+      <th name="th_quantity" class="text-center text-uppercase">
+        <span>CANT</span>
+      </th>
+    </xpath>
+    
+    <xpath expr="//table[@name='invoice_line_table']/thead/tr/th[@name='th_taxes']" position="replace"/>
+    <xpath expr="//table[@name='invoice_line_table']/tbody//t[@name='account_invoice_line_accountable']//td[@name='td_taxes']" position="replace"/>
+
+    <xpath expr="//table[@name='invoice_line_table']/tbody" position="inside">
+      <tr>
+        <td></td>
+        <td></td>
+        <td class="fw-bold"><t t-esc="o.total_boxes"/></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="text-end fw-bold"><t t-out="int(o.total_qty)"/></td>
+        <td colspan="99"></td>
+      </tr>
+    </xpath>
+
+    <xpath expr="//t[@t-call='account.document_tax_totals_company_currency_template']" position="replace"/>
+
+    <xpath expr="//div[@id='right-elements']" position="attributes">
+        <attribute name="t-attf-class">#{'col-5' if report_type == 'pdf' else 'col-12 col-md-5'} ms-5 d-inline-block float-end</attribute>
+    </xpath>
+
+    <xpath expr="//div[@id='payment_term']" position="before">
+      <div class="mt-4 mb-2" style="font-style: italic; font-size:12px; text-align:justify; width: 100%;">
+        Cláusula de Retiro de Mercancía: Como parte del programa de calificación de avíos, ambas partes acuerdan que, en caso de que se requiera un retiro de mercancía, el cliente será responsable de localizar, identificar y recuperar los productos afectados. La fábrica se compromete a proporcionar el soporte técnico y la información pertinente relacionada con los avíos suministrados.
+      </div>
+    </xpath>
+
+    <xpath expr="//div[@id='payment_term']/div[@name='qr_code_placeholder']" position="before">
+      <div style="font-size:12px;">
+        INFORMACION BANCARIA
+        <ul>
+          <li>Beneficiario: TEXTILES YOUM KWANG DOMINICANA, SRL</li>
+          <li>Nombre de banco: Banco Popular</li>
+          <li>SWIFT CODE : BPDODOSX</li>
+          <li>Cuenta No. (USD): 805410859</li>
+          <li>Cuenta No. (DOP): 805411113</li>
+        </ul>
+      </div>
+    </xpath>
+  </template>
+
+  <template id="external_layout_boxed_gaaf" inherit_id="web.external_layout_boxed">
+    <xpath expr="//div[hasclass('col-8') and hasclass('text-end')]" position="attributes">
+      <attribute name="class">d-none</attribute>
+    </xpath>
+
+    <xpath expr="//img[hasclass('o_company_logo_big')]" position="attributes">
+      <attribute name="style">max-width: 120px !important;</attribute>
+    </xpath>
+
+    <xpath expr="//div[hasclass('o_footer_content')]" position="before">
+
+    </xpath>
+  </template>
+</odoo>

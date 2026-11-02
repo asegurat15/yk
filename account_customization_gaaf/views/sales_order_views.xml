@@ -1,0 +1,19 @@
+<odoo>
+  <record id="sale_order_form_order_line_inherit_custom" model="ir.ui.view">
+    <field name="name">sale.order.form.order.line.inherit.custom</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+
+      <!-- TREE: después de product_template_id (aquí sí existe) -->
+      <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+        <field name="po_number" optional="show"/>
+        <field name="color" optional="show"/>
+        <field name="style" optional="show"/>
+        <field name="boxes" optional="show"/>
+        <field name="lot_number" optional="show"/>
+      </xpath>
+
+    </field>
+  </record>
+</odoo>

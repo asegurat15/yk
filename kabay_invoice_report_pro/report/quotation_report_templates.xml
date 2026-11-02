@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!--
+      The standard sales report reserves a large upper margin for Odoo's
+      external header. This design prints its letterhead inside the document,
+      so it needs an isolated paper format with no reserved running-header area.
+    -->
+    <record id="kabay_quotation_paperformat" model="report.paperformat">
+      <field name="name">Kabay Quotation - US Letter</field>
+      <field name="default" eval="False"/>
+      <field name="format">Letter</field>
+      <field name="orientation">Portrait</field>
+      <field name="margin_top">4</field>
+      <field name="margin_bottom">14</field>
+      <field name="margin_left">5</field>
+      <field name="margin_right">5</field>
+      <field name="header_line" eval="False"/>
+      <field name="header_spacing">0</field>
+      <field name="dpi">90</field>
+    </record>
+
+    <!-- Keep the existing standard print action, only assign the isolated
+         quotation paper format so no duplicate print option is created. -->
+    <record id="sale.action_report_saleorder" model="ir.actions.report">
+      <field name="paperformat_id" ref="kabay_invoice_report_pro.kabay_quotation_paperformat"/>
+    </record>
+
+    <!--
+      Independent quotation layout based on the supplied S135643 reference.
+      It does not inherit generic invoice classes and does not modify the
+      existing invoice templates.
+    -->
+    <record id="report_quotation_document_kabay" model="ir.ui.view">
+      <field name="name">Kabay Quotation - Reference Design</field>
+      <field name="key">kabay_invoice_report_pro.report_quotation_document_kabay</field>
+      <field name="type">qweb</field>
+      <field name="inherit_id" eval="False"/>
+      <field name="mode">primary</field>
+      <field name="active" eval="True"/>
+      <field name="arch" type="xml">
+        <t t-name="kabay_invoice_report_pro.report_quotation_document_kabay">
+          <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang or doc.env.lang)"/>
+          <t t-set="customer" t-value="doc.partner_invoice_id or doc.partner_id"/>
+          <t t-set="payment_term"
+             t-value="doc.payment_term_id or doc.partner_id.with_company(doc.company_id).property_payment_term_id"/>
+          <t t-set="quotation_lines" t-value="doc._get_order_lines_to_report()"/>
+          <t t-set="quotation_product_lines"
+             t-value="quotation_lines.filtered(lambda candidate: not candidate.display_type)"/>
+          <t t-set="kabay_quotation_tz"
+             t-value="doc.company_id._kabay_report_tz()"/>
+          <t t-set="kabay_company_terms"
+             t-value="doc.company_id._kabay_report_terms_html(lang=doc.partner_id.lang or doc.env.user.lang)"/>
+
+          <div class="header"/>
+
+          <div class="article kabay-quotation-report"
+               t-att-data-oe-model="doc and doc._name"
+               t-att-data-oe-id="doc and doc.id"
+               t-att-data-oe-lang="doc and doc.env.context.get('lang')">
+            <div class="page kabay-quotation-page">
+              <table class="kabay-quotation-company-header">
+                <tbody>
+                  <tr>
+                    <td class="kabay-quotation-company-column">
+                      <!-- Logo and company details come directly from Document Layout. -->
+                      <img t-if="doc.company_id.logo"
+                           t-att-src="image_data_uri(doc.company_id.logo)"
+                           class="kabay-quotation-logo"
+                           alt="Logo"/>
+                      <div class="kabay-quotation-company-address kabay-quotation-company-details-source"
+                           t-if="doc.company_id.company_details"
+                           t-field="doc.company_id.company_details"/>
+                      <div t-if="doc.company_id.vat" class="kabay-quotation-company-rnc">
+                        <span class="kabay-quotation-bold">RNC:</span>
+                        <span t-field="doc.company_id.vat"/>
+                      </div>
+                    </td>
+                    <td class="kabay-quotation-header-spacer"/>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="kabay-quotation-header-rule"/>
+
+              <table class="kabay-quotation-customer-table">
+                <tbody>
+                  <tr>
+                    <td class="kabay-quotation-customer-empty"/>
+                    <td class="kabay-quotation-customer-column">
+                      <div class="kabay-quotation-customer-name" t-field="customer.name"/>
+                      <div t-if="customer.street" t-field="customer.street"/>
+                      <div t-if="customer.street2" t-field="customer.street2"/>
+                      <div>
+                        <span t-if="customer.city" t-field="customer.city"/>
+                        <span t-if="customer.city and customer.state_id">, </span>
+                        <span t-if="customer.state_id" t-field="customer.state_id"/>
+                      </div>
+                      <div t-if="customer.country_id" t-field="customer.country_id"/>
+                      <div t-if="customer.phone">
+                        <span class="kabay-quotation-bold">Tel.:</span>
+                        <span t-field="customer.phone"/>
+                      </div>
+                      <div t-if="customer.vat">
+                        <span class="kabay-quotation-bold">RNC:</span>
+                        <span t-field="customer.vat"/>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h1 class="kabay-quotation-title">
+                <t t-if="doc.state == 'sale'">
+                  <span>Número de orden </span>
+                </t>
+                <t t-else="">
+                  <span>Número de cotización </span>
+                </t>
+                <span t-field="doc.name"/>
+              </h1>
+
+              <table class="kabay-quotation-info-table">
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="kabay-quotation-info-label">
+                        <t t-if="doc.state == 'sale'">Fecha de orden:</t>
+                        <t t-else="">Fecha de cotización:</t>
+                      </div>
+                      <div t-field="doc.date_order"
+                           t-options-widget="'datetime'"
+                           t-options-tz_name="kabay_quotation_tz"/>
+                    </td>
+                    <td>
+                      <div class="kabay-quotation-info-label">Vendedor:</div>
+                      <div t-field="doc.user_id"/>
+                    </td>
+                    <td>
+                      <div class="kabay-quotation-info-label">Plazo de pago:</div>
+                      <div>
+                        <span t-if="payment_term" t-field="payment_term.name"/>
+                        <span t-else="">Pago Contado</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="kabay-quotation-lines-table">
+                <thead>
+                  <tr>
+                    <th class="kabay-quotation-description">Descripción</th>
+                    <th class="kabay-quotation-quantity">Cantidad</th>
+                    <th class="kabay-quotation-price">Precio unitario</th>
+                    <th class="kabay-quotation-taxes">Impuestos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="quotation_lines" t-as="line">
+                    <tr t-if="line.display_type in ('line_section', 'line_subsection')"
+                        class="kabay-quotation-section-row">
+                      <td colspan="4"><span t-field="line.name"/></td>
+                    </tr>
+                    <tr t-elif="line.display_type == 'line_note'"
+                        class="kabay-quotation-note-row">
+                      <td colspan="4"><span t-field="line.name"/></td>
+                    </tr>
+                    <tr t-else=""
+                        t-att-class="'kabay-quotation-product-row kabay-quotation-last-product-row' if quotation_product_lines and line == quotation_product_lines[-1] else 'kabay-quotation-product-row'">
+                      <td class="kabay-quotation-description-cell">
+                        <t t-set="line_parts" t-value="line._kabay_report_line_parts()"/>
+                        <div t-out="line_parts['primary']"/>
+                        <div t-if="line_parts['detail'] and doc.company_id.invoice_report_design != 'new'"
+                             class="kabay-quotation-line-detail"
+                             t-out="line_parts['detail']"/>
+                      </td>
+                      <td class="kabay-quotation-number-cell">
+                        <span t-field="line.product_uom_qty" t-options="{'widget': 'float', 'precision': 2}"/>
+                        <span t-field="line.product_uom_id"/>
+                      </td>
+                      <td class="kabay-quotation-number-cell">
+                        <span t-field="line.price_unit" t-options="{'widget': 'float', 'precision': 2}"/>
+                      </td>
+                      <td class="kabay-quotation-tax-cell">
+                        <span t-if="line.tax_ids"
+                              t-out="', '.join(line.tax_ids.mapped('display_name'))"/>
+                        <span t-else="">Sin impuesto</span>
+                      </td>
+                    </tr>
+                  </t>
+                </tbody>
+              </table>
+
+              <table class="kabay-quotation-totals-table">
+                <tbody>
+                  <tr>
+                    <td class="kabay-quotation-total-label">Subtotal</td>
+                    <td class="kabay-quotation-total-value"><span t-field="doc.amount_untaxed"/></td>
+                  </tr>
+                  <tr>
+                    <td class="kabay-quotation-total-label">ITBIS</td>
+                    <td class="kabay-quotation-total-value"><span t-field="doc.amount_tax"/></td>
+                  </tr>
+                  <tr class="kabay-quotation-grand-total-row">
+                    <td class="kabay-quotation-total-label">Total</td>
+                    <td class="kabay-quotation-total-value"><span t-field="doc.amount_total"/></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div t-if="kabay_company_terms" class="kabay-quotation-commercial-terms">
+                <div class="kabay-quotation-commercial-content"
+                     t-out="kabay_company_terms"/>
+              </div>
+
+              <div class="kabay-quotation-payment-term">
+                <span class="kabay-quotation-bold">Plazo de pago:</span>
+                <span t-if="payment_term" t-field="payment_term.name"/>
+                <span t-else="">Pago Contado</span>
+              </div>
+
+              <div class="oe_structure"/>
+            </div>
+          </div>
+
+          <div class="footer kabay-quotation-footer">
+            <!-- Footer configured in Settings > Configure Document Layout. -->
+            <div t-if="doc.company_id.report_footer"
+                 class="kabay-quotation-document-footer-source"
+                 t-field="doc.company_id.report_footer"/>
+            <div class="kabay-quotation-page-counter">
+              Página: <span class="page"/> de <span class="topage"/>
+            </div>
+          </div>
+        </t>
+      </field>
+    </record>
+
+    <!--
+      Route every sale document state to the same reference design, regardless
+      of company: draft, sent, confirmed/locked and cancelled documents.
+    -->
+    <template id="report_saleorder_raw_kabay_router"
+              inherit_id="sale.report_saleorder_raw"
+              name="Kabay Sale Document Router">
+      <xpath expr="//t[@t-call='sale.report_saleorder_document']" position="replace">
+        <t t-call="kabay_invoice_report_pro.report_quotation_document_kabay"
+           t-lang="doc.partner_id.lang or doc.env.lang"/>
+      </xpath>
+    </template>
+  </data>
+</odoo>

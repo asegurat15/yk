@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_order_form_product_description_by_design" model="ir.ui.view">
+      <field name="name">sale.order.form.product.description.by.design</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field name="arch" type="xml">
+        <!-- Make the company-dependent value available to the embedded line views. -->
+        <xpath expr="//field[@name='order_line']" position="before">
+          <field name="kabay_hide_product_description" invisible="1"/>
+        </xpath>
+
+        <!-- Diseño 2: remove the editable Description column from product lines. -->
+        <xpath expr="//field[@name='order_line']/list/field[@name='name']" position="attributes">
+          <attribute name="column_invisible">parent.kabay_hide_product_description</attribute>
+        </xpath>
+
+        <!-- Apply the same rule when a sales line is opened in its form dialog. -->
+        <xpath expr="(//field[@name='order_line']/form/label[@for='name'])[1]" position="attributes">
+          <attribute name="invisible">display_type or parent.kabay_hide_product_description</attribute>
+        </xpath>
+        <xpath expr="//field[@name='order_line']/form/field[@name='name']" position="attributes">
+          <attribute name="invisible">not display_type and parent.kabay_hide_product_description</attribute>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
