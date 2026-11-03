@@ -274,9 +274,9 @@
 <!--          <div class="kabay-narration innovate-terms-flow" t-out="kabay['company_terms']"/>-->
 <!--        </div>-->
 <!--      </xpath>-->
-      <xpath expr="//div[@id='payment_term']" position="attributes">
-        <attribute name="class" add="innovate-compact-payment-term" separator=" "/>
-      </xpath>
+<!--      <xpath expr="//div[@id='payment_term']" position="attributes">-->
+<!--        <attribute name="class" add="innovate-compact-payment-term" separator=" "/>-->
+<!--      </xpath>-->
     </template>
 
     <template id="report_invoice_document_new_compact"

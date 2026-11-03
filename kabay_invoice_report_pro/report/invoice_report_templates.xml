@@ -130,10 +130,10 @@
                         </div>
                       </td>
                       <td class="kabay-right-column" style="width: 50%;">
-                        <div t-if="kabay['quotation_code']" name="invoice_origin">
-                          <span class="kabay-label">Código de cotización:</span>
-                          <span t-out="kabay['quotation_code']"/>
-                        </div>
+<!--                        <div t-if="kabay['quotation_code']" name="invoice_origin">-->
+<!--                          <span class="kabay-label">Código de cotización:</span>-->
+<!--                          <span t-out="kabay['quotation_code']"/>-->
+<!--                        </div>-->
                         <div t-if="kabay['payment_term']">
                           <span class="kabay-label">Condiciones:</span>
                           <span t-out="kabay['payment_term']"/>
@@ -153,15 +153,15 @@
               <table class="kabay-lines" name="invoice_line_table" style="width:100%; max-width:100%; table-layout:fixed; border-collapse:collapse; border-spacing:0; border:0; margin:0;">
                 <thead>
                   <tr>
-                    <th>PO#</th>
-                    <th >ESTILO</th>
-                    <th >CAJAS/PAQ.</th>
-                    <th >LOT #</th>
-                    <th >COLOR</th>
-                    <th name="th_description" class="text-start" >Descripción</th>
-                    <th name="th_quantity" class="text-end">Cantidad</th>
-                    <th name="th_priceunit" class="text-end" >Precio unitario</th>
-                    <th name="th_subtotal" class="text-end" >Importe</th>
+                    <th style="width: 5%;">PO#</th>
+                    <th style="width: 8%;">ESTILO</th>
+                    <th style="width: 10%;">CAJAS/PAQ.</th>
+                    <th style="width: 10%;">LOT #</th>
+                    <th style="width: 10%;">COLOR</th>
+                    <th name="th_description" class="text-start" style="width: 20%;">Descripción</th>
+                    <th name="th_quantity" class="text-end" style="width: 12%;">Cantidad</th>
+                    <th name="th_priceunit" class="text-end" style="width: 10%;">Precio unitario</th>
+                    <th name="th_subtotal" class="text-end" style="width: 15%;">Importe</th>
                   </tr>
                 </thead>
                 <tbody class="invoice_tbody">
@@ -295,10 +295,10 @@
         </ul>
               </div>
 
-              <div id="payment_term" class="kabay-payment-term-highlight avoid-page-break-inside">
-                <span class="kabay-label">Plazo de pago:</span>
-                <span t-out="kabay['payment_term']"/>
-              </div>
+<!--              <div id="payment_term" class="kabay-payment-term-highlight avoid-page-break-inside">-->
+<!--                <span class="kabay-label">Plazo de pago:</span>-->
+<!--                <span t-out="kabay['payment_term']"/>-->
+<!--              </div>-->
 
               <table t-if="kabay['qr']['binary'] or kabay['qr']['src'] or kabay['security_code'] or kabay['signature_datetime']"
                      class="kabay-ecf-data avoid-page-break-inside">
