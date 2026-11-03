@@ -226,6 +226,7 @@
                       <span t-field="o.partner_id.phone"/>
                     </span>
                     <span t-if="o.partner_id.phone and o.partner_id.vat" class="innovate-customer-contact-separator"> · </span>
+                    <br/>
                     <span t-if="o.partner_id.vat" id="partner_vat_no_shipping">
                       <span class="kabay-label">RNC:</span>
                       <span t-field="o.partner_id.vat"/>
@@ -246,7 +247,7 @@
 
                 <t t-if="o.partner_shipping_id and (o.partner_shipping_id != o.partner_id)">
                   <div groups="account.group_delivery_invoice_address" name="shipping_address_block">
-                      <strong class="d-block mt-3">Shipping Address</strong>
+                      <strong class="d-block">Shipping Address</strong>
                       <div t-field="o.partner_shipping_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
                   </div>
 

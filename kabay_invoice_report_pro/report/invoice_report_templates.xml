@@ -83,9 +83,8 @@
                       </div>
                     </td>
                     <td class="kabay-right-column" style="width: 50%;">
-                      <div class="kabay-document-title" style="color:#525960; font-size:22pt; font-weight:400; line-height:1.08; margin:0 0 3.2mm 0; white-space:nowrap;" t-out="kabay['document_title']"/>
-                      <div class="kabay-document-number"
-                           style="color:#454c54; font-size:17pt; font-weight:700; line-height:1.1; margin:0 0 4mm 0;"
+                      <div t-out="kabay['document_title']"/>
+                      <div
                            t-if="o.name and o.name != '/'"
                            t-field="o.name"/>
                       <div t-if="kabay['fiscal_number']">
