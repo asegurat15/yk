@@ -154,14 +154,14 @@
                 <thead>
                   <tr>
                     <th>PO#</th>
-                    <th class="kabay-new-invoice-description">ESTILO</th>
-                    <th class="kabay-new-invoice-description">CAJAS/PAQ.</th>
-                    <th class="kabay-new-invoice-description">LOT #</th>
-                    <th class="kabay-new-invoice-description">COLOR</th>
-                    <th name="th_description" class="text-start">Descripción</th>
+                    <th >ESTILO</th>
+                    <th >CAJAS/PAQ.</th>
+                    <th >LOT #</th>
+                    <th >COLOR</th>
+                    <th name="th_description" class="text-start" >Descripción</th>
                     <th name="th_quantity" class="text-end">Cantidad</th>
-                    <th name="th_priceunit" class="text-end">Precio unitario</th>
-                    <th name="th_subtotal" class="text-end">Importe</th>
+                    <th name="th_priceunit" class="text-end" >Precio unitario</th>
+                    <th name="th_subtotal" class="text-end" >Importe</th>
                   </tr>
                 </thead>
                 <tbody class="invoice_tbody">
