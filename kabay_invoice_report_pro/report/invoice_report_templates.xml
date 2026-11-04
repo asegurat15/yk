@@ -84,7 +84,7 @@
                     </td>
                     <td class="kabay-right-column" style="width: 50%;">
                       <div t-out="kabay['document_title']"/>
-                      <div
+                      <div 
                            t-if="o.name and o.name != '/'"
                            t-field="o.name"/>
                       <div t-if="kabay['fiscal_number']">
@@ -152,15 +152,15 @@
               <table class="kabay-lines" name="invoice_line_table" style="width:100%; max-width:100%; table-layout:fixed; border-collapse:collapse; border-spacing:0; border:0; margin:0;">
                 <thead>
                   <tr>
-                    <th style="width: 5%;">PO#</th>
-                    <th style="width: 8%;">ESTILO</th>
-                    <th style="width: 10%;">CAJAS/PAQ.</th>
+                    <th style="width: 10%;">PO#</th>
+                    <th style="width: 10%;">ESTILO</th>
+                    <th style="width: 10%;">CAJAS/<br/>PAQ.</th>
                     <th style="width: 10%;">LOT #</th>
                     <th style="width: 10%;">COLOR</th>
-                    <th name="th_description" class="text-start" style="width: 20%;">Descripción</th>
-                    <th name="th_quantity" class="text-end" style="width: 12%;">Cantidad</th>
-                    <th name="th_priceunit" class="text-end" style="width: 10%;">Precio unitario</th>
-                    <th name="th_subtotal" class="text-end" style="width: 15%;">Importe</th>
+                    <th name="th_description" class="text-start" style="width: 22%;">Descripción</th>
+                    <th name="th_quantity" class="text-end" style="width: 10%;">Cantidad</th>
+                    <th name="th_priceunit" class="text-end" style="width: 8%;">Precio unitario</th>
+                    <th name="th_subtotal" class="text-end" style="width: 10%;">Importe</th>
                   </tr>
                 </thead>
                 <tbody class="invoice_tbody">
