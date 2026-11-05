@@ -210,6 +210,18 @@
                       </td>
                     </tr>
                   </t>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td class="fw-bold"><t t-esc="o.total_boxes"/></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-end fw-bold"><t t-out="int(o.total_qty)"/></td>
+                        <td></td>
+                        <td></td>
+<!--                        <td colspan="99"></td>-->
+                      </tr>
                 </tbody>
               </table>
 
@@ -337,12 +349,12 @@
 <!--              </table>-->
               <div class="row text-center mt-5 signatures" style="page-break-inside: avoid;">
                 <div class="col-6 mt-2">
-                    <div style="border-top: 1px solid black; width: 70%; margin: 0 auto;"/>
-                    <strong class="mt-2 d-block">Preparado por</strong>
+<!--                    <div style="border-top: 1px solid black; width: 70%; margin: 0 auto;"/>-->
+<!--                    <strong class="mt-2 d-block">Preparado por</strong>-->
                 </div>
                 <div class="col-6 mt-2">
                     <div style="border-top: 1px solid black; width: 70%; margin: 0 auto;"/>
-                    <strong class="mt-2 d-block">Recibido por</strong>
+                    <strong class="mt-2 d-block">Autorizado por</strong>
                 </div>
             </div>
               <div class="oe_structure"/>
